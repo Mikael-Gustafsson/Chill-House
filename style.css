@@ -1,10 +1,22 @@
+:root {
+  --primary-color: #67c3f3;
+  --primary-hover-color: #5aa0f0;
+  --text-color: #333;
+  --background-color: #f7f9fc;
+  --border-color: #ccc;
+  --border-radius: 8px;
+  --font-size: 14px;
+  --padding: 6px 8px;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 body {
   font-family: "Segoe UI", sans-serif;
   padding: 15px;
   width: 250px;
-  background-color: #f7f9fc;
+  background-color: var(--background-color);
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: var(--box-shadow);
 }
 
 
@@ -12,16 +24,16 @@ label {
   display: block;
   margin-top: 10px;
   font-weight: 500;
-  color: #333;
+  color: var(--text-color);
 }
 
 input {
   width: 100%;
-  padding: 6px 8px;
+  padding: var(--padding);
   margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
   box-sizing: border-box;
 }
 
@@ -30,17 +42,17 @@ button {
   margin-top: 16px;
   width: 100%;
   padding: 10px;
-  background: linear-gradient(135deg, #67c3f3, #5aa0f0);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover-color));
   border: none;
   color: white;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 button:hover {
-  background: linear-gradient(135deg, #5aa0f0, #67c3f3);
+  background: linear-gradient(135deg, var(--primary-hover-color), var(--primary-color));
 }
 
 
@@ -61,17 +73,17 @@ input[type="checkbox"] {
 
 .setting-row label {
   font-weight: 500;
-  color: #333;
+  color: var(--text-color);
   white-space: nowrap;
 }
 
 .setting-row input[type="number"],
 .setting-row input[type="time"] {
   width: 100%;
-  padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: var(--padding);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
   box-sizing: border-box;
 }
 
