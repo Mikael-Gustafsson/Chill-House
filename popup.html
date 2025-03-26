@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Chill House</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>🧘 Chill House</h2>
-  <label>💧 Vattenintervall (min):</label>
-  <input id="water" type="number" min="5" value="60"><br>
+  <div class="popup-box">
+    <h2>🧘 Chill House</h2>
 
-  <label>🍽 Lunchtid:</label>
-  <input id="lunch" type="time" value="12:00"><br>
+    <div class="setting-row">
+      <label for="water">💧 Vatten:</label>
+      <input id="water" type="number" min="5" value="60">
+      <input type="checkbox" id="enableWater" checked>
+    </div>
+    
+    <div class="setting-row">
+      <label for="lunch">🍽 Lunch:</label>
+      <input id="lunch" type="time" value="12:00">
+      <input type="checkbox" id="enableLunch" checked>
+    </div>
+    
+    <div class="setting-row">
+      <label for="fika">☕ Fika:</label>
+      <input id="fika" type="time" value="15:00">
+      <input type="checkbox" id="enableFika" checked>
+    </div>
+    
+    <div class="setting-row">
+      <p id="weatherBox">🔄 Hämtar väderprognos...</p>
+    </div>
 
-  <label>☕ Fikatid:</label>
-  <input id="fika" type="time" value="15:00"><br>
-
-  <button id="save">Spara</button>
+    <button id="save">Spara</button>
+  </div>
 
   <script src="popup.js"></script>
 </body>

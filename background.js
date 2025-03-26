@@ -8,14 +8,6 @@ function showNotification(title, message) {
   });
 }
 
-function setupAlarms(settings) {
-  chrome.alarms.clearAll(() => {
-    chrome.alarms.create("water", { periodInMinutes: Number(settings.waterInterval) });
-    chrome.alarms.create("lunch", { when: getNextTimeInMillis(settings.lunchTime) });
-    chrome.alarms.create("fika", { when: getNextTimeInMillis(settings.fikaTime) });
-  });
-}
-
 function getNextTimeInMillis(timeStr) {
   const now = new Date();
   const [h, m] = timeStr.split(":").map(Number);
@@ -26,45 +18,76 @@ function getNextTimeInMillis(timeStr) {
   return target.getTime();
 }
 
+// Lägg upp alarm vid installation
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.get(["waterInterval", "lunchTime", "fikaTime"], (settings) => {
+  chrome.storage.sync.get(["waterInterval", "lunchTime", "fikaTime", "enableWater", "enableLunch", "enableFika"], (settings) => {
     const defaults = {
       waterInterval: "60",
       lunchTime: "12:00",
-      fikaTime: "15:00"
+      fikaTime: "15:00",
+      enableWater: true,
+      enableLunch: true,
+      enableFika: true
     };
     setupAlarms({ ...defaults, ...settings });
   });
 });
 
+// Skapa alarm baserat på inställningar
+function setupAlarms(settings) {
+  chrome.alarms.clearAll(() => {
+    if (settings.enableWater) {
+      chrome.alarms.create("water", {
+        periodInMinutes: Number(settings.waterInterval)
+      });
+    }
+
+    if (settings.enableLunch) {
+      chrome.alarms.create("lunch", {
+        when: getNextTimeInMillis(settings.lunchTime)
+      });
+    }
+
+    if (settings.enableFika) {
+      chrome.alarms.create("fika", {
+        when: getNextTimeInMillis(settings.fikaTime)
+      });
+    }
+  });
+}
+
+// Lyssna på alarm
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "water") {
     showNotification("💧 Drick vatten!", "Dags att ta en klunk!");
   }
+
   if (alarm.name === "lunch") {
     showNotification("🍽 Lunchtid!", "Dags att ta en paus och äta.");
-    chrome.alarms.create("lunch", { when: getNextTimeInMillis(getTimeFromStorage("lunchTime")) });
+    chrome.storage.sync.get(["lunchTime"], (data) => {
+      const lunchTime = data.lunchTime || "12:00";
+      chrome.alarms.create("lunch", {
+        when: getNextTimeInMillis(lunchTime)
+      });
+    });
   }
+
   if (alarm.name === "fika") {
     showNotification("☕ Fika!", "Dags att koppla av med en kopp.");
-    chrome.alarms.create("fika", { when: getNextTimeInMillis(getTimeFromStorage("fikaTime")) });
-  }
-});
-
-// Lyssna på meddelande från popupen
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "update-alarms") {
-    chrome.storage.sync.get(["waterInterval", "lunchTime", "fikaTime"], (settings) => {
-      setupAlarms(settings);
+    chrome.storage.sync.get(["fikaTime"], (data) => {
+      const fikaTime = data.fikaTime || "15:00";
+      chrome.alarms.create("fika", {
+        when: getNextTimeInMillis(fikaTime)
+      });
     });
   }
 });
 
-// Hjälpfunktion: få aktuell tid från lagring
-function getTimeFromStorage(key) {
-  let value = "00:00";
-  chrome.storage.sync.get([key], (data) => {
-    value = data[key] || value;
-  });
-  return value;
-}
+// Lyssna på uppdateringar från popup
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "update-alarms") {
+    chrome.storage.sync.get(["waterInterval", "lunchTime", "fikaTime", "enableWater", "enableLunch", "enableFika"], (settings) => {
+      setupAlarms(settings);
+    });
+  }
+});
