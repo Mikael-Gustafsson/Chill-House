@@ -38,3 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("weatherBox").textContent = "⚠️ Kunde inte hämta väder.";
     });
 });
+
+
+document.getElementById("openMusic").addEventListener("click", () => {
+  chrome.tabs.create({ url: "https://www.youtube.com/watch?v=FJQVRqQV4SA" });
+});
