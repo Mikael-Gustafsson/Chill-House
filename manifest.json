@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "Påminnelser om att dricka vatten, äta lunch och ta fika. 💧🍽☕",
   "permissions": ["alarms", "storage", "notifications"],
-  "host_permissions": ["http://localhost:3000/"],
+  "host_permissions": ["http://localhost:4000/"],
   "background": {
     "service_worker": "background.js"
   },

@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Hämta väder
-  fetch("http://localhost:3000/api/weather")
+  fetch("http://localhost:4000/api/weather")
     .then(res => res.json())
     .then(data => {
       const box = document.getElementById("weatherBox");
